@@ -18,9 +18,9 @@ using namespace ClipperLib;
 namespace c2t
 {
 
-
-static const F64 CLIPPER_SCALE_FACT = 1000.0f;
-static const F64 CLIPPER_SCALE_FACT_INVERSE = 0.001f;
+    // Values taken from QtLocation 5.9 project
+    static const F64 CLIPPER_SCALE_FACT         = 281474976710656.0; // 48 bits of precision
+    static const F64 CLIPPER_SCALE_FACT_INVERSE = 1.0 / CLIPPER_SCALE_FACT;
 
 
 /////////////////////////////////
