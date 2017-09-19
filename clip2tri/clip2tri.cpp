@@ -19,8 +19,8 @@ namespace c2t
 {
 
 
-static const F32 CLIPPER_SCALE_FACT = 1000.0f;
-static const F32 CLIPPER_SCALE_FACT_INVERSE = 0.001f;
+static const F64 CLIPPER_SCALE_FACT = 1000.0f;
+static const F64 CLIPPER_SCALE_FACT_INVERSE = 0.001f;
 
 
 /////////////////////////////////
@@ -106,7 +106,7 @@ vector<vector<Point> > clip2tri::downscaleClipperPoints(const Paths &inputPolygo
       outputPolygons[i].resize(inputPolygons[i].size());
 
       for(U32 j = 0; j < inputPolygons[i].size(); j++)
-         outputPolygons[i][j] = Point(F32(inputPolygons[i][j].X) * CLIPPER_SCALE_FACT_INVERSE, F32(inputPolygons[i][j].Y) * CLIPPER_SCALE_FACT_INVERSE);
+         outputPolygons[i][j] = Point(F64(inputPolygons[i][j].X) * CLIPPER_SCALE_FACT_INVERSE, F64(inputPolygons[i][j].Y) * CLIPPER_SCALE_FACT_INVERSE);
    }
 
    return outputPolygons;

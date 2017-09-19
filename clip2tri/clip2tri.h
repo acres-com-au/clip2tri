@@ -29,14 +29,14 @@ typedef double           F64;
 
 struct Point
 {
-   F32 x;
-   F32 y;
+   F64 x;
+   F64 y;
 
    Point();
    Point(const Point &pt);
 
    template<class T, class U>
-   Point(T in_x, U in_y) { x = static_cast<F32>(in_x); y = static_cast<F32>(in_y); }
+   Point(T in_x, U in_y) { x = static_cast<F64>(in_x); y = static_cast<F64>(in_y); }
 };
 
 
