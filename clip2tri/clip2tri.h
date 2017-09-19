@@ -49,10 +49,11 @@ private:
   Paths upscaleClipperPoints(const vector<vector<Point>> &inputPolygons);
   vector<vector<Point>> downscaleClipperPoints(const Paths &inputPolygons);
 
-   bool mergePolysToPolyTree(const vector<vector<Point> > &inputPolygons, PolyTree &solution);
+   bool mergePolysToPolyTree(const vector<vector<Point>> &inputOutlines,
+                             const vector<vector<Point>> &inputPolygons,
+                             PolyTree                    &solution);
 
-   bool triangulateComplex(vector<Point> &outputTriangles, const Path &outline,
-         const PolyTree &polyTree, bool ignoreFills = true, bool ignoreHoles = false);
+   bool triangulateComplex(vector<Point> &outputTriangles, const Path &outline, const PolyTree &polyTree);
 
 public:
   clip2tri();

@@ -56,7 +56,7 @@ void clip2tri::triangulate(const vector<vector<Point> > &inputPolygons, vector<P
 {
    // Use clipper to clean.  This upscales the floating point input
    PolyTree solution;
-   mergePolysToPolyTree(inputPolygons, solution);
+   mergePolysToPolyTree({boundingPolygon}, inputPolygons, solution);
 
    Path bounds = upscaleClipperPoints(boundingPolygon);
 
@@ -117,9 +117,12 @@ vector<vector<Point> > clip2tri::downscaleClipperPoints(const Paths &inputPolygo
 // NOTE: this does NOT downscale the Clipper points.  You must do this afterwards
 //
 // Here you add all your non-navigatable objects (e.g. walls, barriers, etc.)
-bool clip2tri::mergePolysToPolyTree(const vector<vector<Point> > &inputPolygons, PolyTree &solution)
+bool clip2tri::mergePolysToPolyTree(const vector<vector<Point>> &inputOutlines,
+                                    const vector<vector<Point>> &inputPolygons,
+                                    PolyTree                    &solution)
 {
-   Paths input = upscaleClipperPoints(inputPolygons);
+   Paths outlines = upscaleClipperPoints(inputOutlines);
+   Paths holes = upscaleClipperPoints(inputPolygons);
 
    // Fire up clipper and union!
    Clipper clipper;
@@ -127,14 +130,16 @@ bool clip2tri::mergePolysToPolyTree(const vector<vector<Point> > &inputPolygons,
 
    try  // there is a "throw" in AddPolygon
    {
-      clipper.AddPaths(input, ptSubject, true);
+      clipper.AddPaths(outlines, ptSubject, true);
+      clipper.AddPaths(holes, ptClip, true);
    }
    catch(...)
    {
       printf("clipper.AddPaths, something went wrong\n");
    }
 
-   return clipper.Execute(ctUnion, solution, pftNonZero, pftNonZero);
+   // Return a polygon without the holes
+   return clipper.Execute(ctXor, solution, pftNonZero, pftNonZero);
 }
 
 
@@ -183,9 +188,7 @@ static void edgeShrink(Path &path)
 // For assistance with a special case crash, see this utility:
 //    http://javascript.poly2tri.googlecode.com/hg/index.html
 //
-// FIXME: what is ignoreFills and ignoreHoles for?  kaen?
-bool clip2tri::triangulateComplex(vector<Point> &outputTriangles, const Path &outline,
-      const PolyTree &polyTree, bool ignoreFills, bool ignoreHoles)
+bool clip2tri::triangulateComplex(vector<Point> &outputTriangles, const Path &outline, const PolyTree &polyTree)
 {
    // Keep track of memory for all the poly2tri objects we create
    vector<p2t::CDT*> cdtRegistry;
@@ -209,10 +212,7 @@ bool clip2tri::triangulateComplex(vector<Point> &outputTriangles, const Path &ou
    PolyNode *currentNode = rootNode;
    while(currentNode != NULL)
    {
-      // A Clipper hole is actually what we want to build zones for; they become our bounding
-      // polylines.  poly2tri holes are therefore the inverse
-      if((!ignoreHoles && currentNode->IsHole()) ||
-         (!ignoreFills && !currentNode->IsHole()))
+      if(!currentNode->IsHole())
       {
          // Build up this polyline in poly2tri's format (downscale Clipper points)
          vector<p2t::Point*> polyline;
