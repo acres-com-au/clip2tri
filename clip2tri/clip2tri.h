@@ -59,8 +59,9 @@ public:
    clip2tri();
    virtual ~clip2tri();
 
-   void triangulate(const vector<vector<Point> > inputPolygons, vector<Point> &outputTriangles,
-         const vector<Point> boundingPolygon);
+   void triangulate(const vector<vector<Point>> &inputPolygons,
+                    vector<Point> &outputTriangles,
+                    const vector<Point> &boundingPolygon);
 };
 
 } /* namespace c2t */

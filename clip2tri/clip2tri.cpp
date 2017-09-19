@@ -51,8 +51,8 @@ clip2tri::~clip2tri()
 }
 
 
-void clip2tri::triangulate(const vector<vector<Point> > inputPolygons, vector<Point> &outputTriangles,
-      const vector<Point> boundingPolygon)
+void clip2tri::triangulate(const vector<vector<Point> > &inputPolygons, vector<Point> &outputTriangles,
+      const vector<Point> &boundingPolygon)
 {
    // Use clipper to clean.  This upscales the floating point input
    PolyTree solution;
