@@ -13,6 +13,7 @@
 
 
 using namespace p2t;
+using namespace ClipperLib;
 
 namespace c2t
 {

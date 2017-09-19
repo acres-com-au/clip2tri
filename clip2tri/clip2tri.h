@@ -13,8 +13,10 @@
 
 #include "../clipper/clipper.hpp"
 
-using namespace std;
-using namespace ClipperLib;
+using std::vector;
+using ClipperLib::Path;
+using ClipperLib::Paths;
+using ClipperLib::PolyTree;
 
 namespace c2t
 {
