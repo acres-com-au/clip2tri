@@ -11,7 +11,7 @@
 
 #include <vector>
 
-#include "../clipper/clipper.hpp"
+#include <polyclipping/clipper.hpp>
 
 namespace c2t {
 
@@ -21,34 +21,33 @@ using ClipperLib::PolyTree;
 
 using std::vector;
 
-typedef signed int       S32;
+typedef signed int S32;
 typedef signed long long S64;
-typedef unsigned int     U32;
-typedef float            F32;
-typedef double           F64;
+typedef unsigned int U32;
+typedef float F32;
+typedef double F64;
 
-struct Point
-{
-   F64 x;
-   F64 y;
+struct Point {
+  F64 x;
+  F64 y;
 
-   Point();
-   Point(const Point &pt);
+  Point();
+  Point(const Point &pt);
 
-   template<class T, class U>
-   Point(T in_x, U in_y) { x = static_cast<F64>(in_x); y = static_cast<F64>(in_y); }
+  template <class T, class U> Point(T in_x, U in_y) {
+    x = static_cast<F64>(in_x);
+    y = static_cast<F64>(in_y);
+  }
 };
 
-
-class clip2tri
-{
+class clip2tri {
 private:
-   //
-   Path upscaleClipperPoints(const vector<Point> &inputPolygon);
+  //
+  Path upscaleClipperPoints(const vector<Point> &inputPolygon);
 
-   // These operate on a vector of polygons
-   Paths upscaleClipperPoints(const vector<vector<Point> > &inputPolygons);
-   vector<vector<Point> > downscaleClipperPoints(const Paths &inputPolygons);
+  // These operate on a vector of polygons
+  Paths upscaleClipperPoints(const vector<vector<Point>> &inputPolygons);
+  vector<vector<Point>> downscaleClipperPoints(const Paths &inputPolygons);
 
    bool mergePolysToPolyTree(const vector<vector<Point> > &inputPolygons, PolyTree &solution);
 
@@ -56,12 +55,11 @@ private:
          const PolyTree &polyTree, bool ignoreFills = true, bool ignoreHoles = false);
 
 public:
-   clip2tri();
-   virtual ~clip2tri();
+  clip2tri();
+  virtual ~clip2tri();
 
-   void triangulate(const vector<vector<Point>> &inputPolygons,
-                    vector<Point> &outputTriangles,
-                    const vector<Point> &boundingPolygon);
+  void triangulate(const vector<vector<Point> > &inputPolygons, vector<Point> &outputTriangles,
+                   const vector<Point> &boundingPolygon);
 };
 
 } /* namespace c2t */
