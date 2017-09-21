@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8.8)
 
 # Set CMake project name
 project(CLIP2TRI)
+set (CMAKE_CXX_STANDARD 11)
 
 # No creating project files in-source.  Bad, evil things happen
 string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" _insource)
