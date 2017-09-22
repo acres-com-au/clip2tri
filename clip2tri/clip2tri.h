@@ -13,20 +13,19 @@
 
 #include "../clipper/clipper.hpp"
 
-using std::vector;
+namespace c2t {
+
 using ClipperLib::Path;
 using ClipperLib::Paths;
 using ClipperLib::PolyTree;
 
-namespace c2t
-{
+using std::vector;
 
 typedef signed int       S32;
 typedef signed long long S64;
 typedef unsigned int     U32;
 typedef float            F32;
 typedef double           F64;
-
 
 struct Point
 {
