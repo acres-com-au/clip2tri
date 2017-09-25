@@ -1,0 +1,13 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${exec_prefix}/@INSTALL_LIB_DIR@
+sharedlibdir=${exec_prefix}/lib
+includedir=${exec_prefix}/include
+
+Name: clip2tri
+Description: clip2tri - triangulate using poly2tri and polyclipping
+Version: @VERSION@
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lclip2tri -lpoly2tri -lpolyclipping
+Cflags: -I${includedir}

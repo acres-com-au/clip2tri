@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 2.8.8)
 project(CLIP2TRI)
 set (CMAKE_CXX_STANDARD 11)
 
+set (VERSION 1.0.0-1)
+
 # No creating project files in-source.  Bad, evil things happen
 string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" _insource)
 if (_insource)
@@ -44,7 +46,7 @@ endif(MSVC)
 
 if(BUILD_SHARED_LIBS)
   add_library(clip2tri SHARED clip2tri/clip2tri.cpp)
-  target_link_libraries(clip2tri poly2tri ${M_LIBRARY})
+  target_link_libraries(clip2tri poly2tri polyclipping ${M_LIBRARY})
   install(TARGETS clip2tri
     RUNTIME DESTINATION ${BIN_DIR}
     LIBRARY DESTINATION ${LIB_DIR}
@@ -53,16 +55,23 @@ endif(BUILD_SHARED_LIBS)
 
 if(BUILD_STATIC_LIBS)
   add_library(clip2tri-static STATIC clip2tri/clip2tri.cpp)
-  target_link_libraries(clip2tri-static poly2tri-static ${M_LIBRARY})
+  target_link_libraries(clip2tri-static poly2tri-static polyclipping ${M_LIBRARY})
   install(TARGETS clip2tri-static
     RUNTIME DESTINATION ${BIN_DIR}
     LIBRARY DESTINATION ${LIB_DIR}
     ARCHIVE DESTINATION ${LIB_DIR})
 endif(BUILD_STATIC_LIBS)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/clip2tri.pc.cmakein
+               ${CMAKE_CURRENT_BINARY_DIR}/clip2tri.pc @ONLY)
+
+set(INSTALL_INC_DIR include/clip2tri)
 
 # Install header files
-install(DIRECTORY clip2tri/ 
-    DESTINATION include/clip2tri
-    FILES_MATCHING PATTERN "*.h"
+install(DIRECTORY clip2tri/
+        DESTINATION ${INSTALL_INC_DIR}
+        FILES_MATCHING PATTERN "*.h"
 )
+
+# Install pkgconfig file
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/clip2tri.pc DESTINATION ${LIB_DIR}/pkgconfig)
